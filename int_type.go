@@ -1,10 +1,26 @@
 package hash
 
-import "errors"
+import (
+	"errors"
+	"strconv"
+)
 
 type Int int
 
 var hashInt HashInteger[int] = NewHashInt()
+
+func (i Int) Int() int {
+	return int(i)
+}
+func (i Int) I64() int64 {
+	return int64(i)
+}
+func (i Int) I32() int32 {
+	return int32(i)
+}
+func (i Int) Str() string {
+	return strconv.Itoa(int(i))
+}
 
 func (i *Int) GoMarshal() ([]byte, error) {
 	if i == nil {
