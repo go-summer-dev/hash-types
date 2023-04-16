@@ -1,4 +1,4 @@
-module hash-types
+module github.com/go-summer-dev/hash-types
 
 go 1.20
 
