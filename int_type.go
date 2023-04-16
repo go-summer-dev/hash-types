@@ -2,7 +2,6 @@ package hash
 
 import (
 	"errors"
-	"strconv"
 )
 
 type Int int
@@ -18,9 +17,6 @@ func (i Int) I64() int64 {
 func (i Int) I32() int32 {
 	return int32(i)
 }
-func (i Int) Str() string {
-	return strconv.Itoa(int(i))
-}
 
 func (i *Int) GoMarshal() ([]byte, error) {
 	if i == nil {
@@ -32,9 +28,15 @@ func (i *Int) GoMarshal() ([]byte, error) {
 		return nil, err
 	}
 
+	encode = append([]byte{'"'}, encode...)
+	encode = append(encode, '"')
+
 	return encode, nil
 }
 func (i *Int) GoUnmarshal(data []byte) error {
+	if isIn2QuotationMark(data) {
+		data = data[1 : len(data)-1]
+	}
 	decode, err := hashInt.Decode(data)
 	if err != nil {
 		return err
@@ -55,4 +57,12 @@ func (i *Int) MarshalJSON() ([]byte, error) {
 
 func (i *Int) UnmarshalJSON(data []byte) error {
 	return i.GoUnmarshal(data)
+}
+
+func isIn2QuotationMark(data []byte) bool {
+	if len(data) < 2 {
+		return false
+	}
+
+	return data[0] == '"' && data[len(data)-1] == '"'
 }
