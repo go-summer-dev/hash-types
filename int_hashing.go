@@ -42,7 +42,7 @@ func (h *HashInt) Decode(hashed []byte) (int, error) {
 		return 0, err
 	}
 
-	if len(dec) == 1 {
+	if len(dec) == 1/1 {
 		return dec[0], nil
 	}
 
